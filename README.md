@@ -125,3 +125,43 @@ Traceback (most recent call last):
     raise TypeError("Mismatch between array dtype ('%s') and "
 TypeError: Mismatch between array dtype ('object') and format specifier ('%.18e')
 ```
+---
+ideas to use custom flight:
+
+change `schedule_filepath = f'c:/Users/Andres/OneDrive/Escritorio/flitex/Python_4DOptimization_Rewrite_JAN2021/shaify2/FDX/GEN_{date}.csv'` to a convenient csv file with custom info:
+
+currently is usign this file for example:
+
+| origin_airport | destination_airport | arrival_time | dept_time | aircraft_type | flight_names           | identity_num | route                                                                      | filed_altitude | filed_airspeed_kts | flight_ref |
+|----------------|---------------------|--------------|-----------|---------------|------------------------|--------------|----------------------------------------------------------------------------|----------------|--------------------|------------|
+| PANC           | KIND                | Tue 07.54    | Tue 02.35 | MD11          | FDX9016_20220208.csv    | FDX9016      | PANC./.YOUNG..YBR..HML..KP09G..KP90I..KG81K..BRBIE.JAKKS2.KIND              |                |                    | 14825991   |
+
+but I want to use something like this:
+
+|origin|destination|date|time|aircraft|arrivalwindowmin|arrivalwindowmax|
+|---|---|---|---|---|---|---|
+|KJFK|KLAX|20191005|2130|A320|01:00|02:00|
+
+but in order to do this seems like I would have to know the route column (how would I get that??) also times of departure and arrival and custom everything!
+
+In the notebook `data` variable is created using
+```python
+# Load the flight path data using the updated filepath
+data = load_flight_path(schedule_filepath)
+```
+---
+## 23 Oct 2024
+Yesterday Sid helped me setup the correct connection to databases cause that was causing trouble as I was not getting the latest data. I was able to try the following flight inside the notebook:
+
+```bash
+python tfms_dbquery12.py --idents DAL1743 -d 20241022
+```
+
+but I'm getting still the: Graph optimizer error.
+Using unoptimized route instead.
+
+In order to see if this is an error inside the code or an error with the specific flight I need to be able to try different flights. This is only possible if I'm able to look directly into the latest flights.
+As Sid recommended this must be done via pgadmin with the help of arnau. 
+
+> as a note Sid recommended using flights with aircraft type `B763` although interestingly the DAL1743 flight used a `B739`.
+> Also use the website [flightaware](https://www.flightaware.com/) which is very useful.
