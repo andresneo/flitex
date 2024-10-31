@@ -165,3 +165,10 @@ As Sid recommended this must be done via pgadmin with the help of arnau.
 
 > as a note Sid recommended using flights with aircraft type `B763` although interestingly the DAL1743 flight used a `B739`.
 > Also use the website [flightaware](https://www.flightaware.com/) which is very useful.
+
+## 31 Oct 2024
+
+As of today I'm able to run the optimization notebook :D with 2 flights:
+
+- DAL1743
+- FDX383
