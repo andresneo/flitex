@@ -168,7 +168,10 @@ As Sid recommended this must be done via pgadmin with the help of arnau.
 
 ## 31 Oct 2024
 
-As of today I'm able to run the optimization notebook :D with 2 flights:
+As of today I'm able to run the optimization notebook :D with 3 flights:
 
-- DAL1743
-- FDX383
+|name|date|origin|destination|number_waypoints|number_arcs|
+|---|---|---|---|---|---|
+|DAL1743|2024-10-22|KATL(Atlanta)|KTYS(Knoxville-Tennessee)|8|128772|
+|FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|17|482218|
+|DAL960|2024-10-20|KLAX(Los Angeles)|KJFK(NY)|44|4.5million|
