@@ -213,5 +213,7 @@ the second line means that we are ordering by the time in descending order and t
 
 ---
 
-### 
+### Gantt chart
+It took some time and is pending to upload but I made a great gantt chart to keep track of progress :)
+
 
