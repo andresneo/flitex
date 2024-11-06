@@ -175,3 +175,43 @@ As of today I'm able to run the optimization notebook :D with 3 flights:
 |DAL1743|2024-10-22|KATL(Atlanta)|KTYS(Knoxville-Tennessee)|8|128772|
 |FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|17|482218|
 |DAL960|2024-10-20|KLAX(Los Angeles)|KJFK(NY)|44|4.5million|
+
+## November 5
+
+---
+### Meeting with Sid and Bernard. 
+
+About output csv file, at first it seemed like it was right under `/notebooks>testDL` but at closer inspection that path pointed me to in the meeting is not really connected to anything. So yes, the variable name is outpath, but it seems like it is not really being used as an output anywhere (i noticed this since I run the code for DAL701 and also other couple but that path and inside the folder is not changing anything, just some fixed fdx old flight)
+
+looking at `bada>public>tables>aircrafts` by right clicking and choosing view/edit data and list first 100 rows, the
+performance table in bada files for some aircraft types are strings instead of floats (to open it just double click . As an example aircraft type "A21N" has almost everrything with strings as opposed to -another example- aircraft "B763" which has float type data.
+
+![BADA-A21N](https://github.com/user-attachments/assets/bb6c45fc-1483-4c85-a05a-4ddab7ce49a4)
+![BADA-B763](https://github.com/user-attachments/assets/51987791-82e3-485c-981a-483794fc68f6)
+
+this is causing trouble...
+
+![A21N_BUG](https://github.com/user-attachments/assets/617c4bf6-f760-4602-aa45-2ca72f4a348a)
+
+About Flights Sid remembered not working or taking too long, he suggested me to run `DAL701` as he recalled that one was taking sometimes undefinite time-runs. He did not remember any other specifics so he told me I should try randomly some other flights to find other non-working and taking too long flights...
+
+At first test `DAL701` didn't run, it truncated... In other run it did compile, but took almost 10 minutes... I  
+
+![DAL701](https://github.com/user-attachments/assets/9e74a8ee-73c9-45a5-aced-7f8749991fdf)
+
+On PGAdmin, some useful commands Sid showed me and I have been using inside `ibmclouddb>schemas>public>tables>flightplan_info` to filter flights of interest:
+
+```SQL
+SELECT * FROM public.flightplan_info where aircraft_id = 'DAL701'
+ORDER BY source_timestamp DESC LIMIT 10
+
+SELECT aircraft_id, departure, arrival, etd ,legacy_format FROM public.flightplan_info where aircraft_id = 'DAL701'
+ORDER BY source_timestamp DESC LIMIT 10
+```
+the star means selecting everything, the aircraft_id can be found listing the first 100 rows and picking one of interest, althought the ones I've been using are ones that Sid already has recommended trying (FDX383, DAL701,..., see this notes for others)
+the second line means that we are ordering by the time in descending order and that we only want 10 rows.
+
+---
+
+### 
+
