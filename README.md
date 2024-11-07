@@ -216,4 +216,21 @@ the second line means that we are ordering by the time in descending order and t
 ### Gantt chart
 It took some time and is pending to upload but I made a great gantt chart to keep track of progress :)
 
+## November 6
+To be able to get the csv file in the outpath I had to run vertical analysis part inside the notebook as well (previously I had only used horizontal optimization) but inside the vertical analysis the csv output is created and put into `C:\Users\Andres\OneDrive\Escritorio\flitex\Python_4DOptimization_Rewrite_JAN2021\notebooks\TestDL\Result_shaify\20241022\DAL1743\optim_flight_detailed.csv`
 
+Running the vertical part was a challenge since it had connection port issues... but Priyanka helped me solve this issue.
+
+Now I got the csv file (two of them)
+![image](https://github.com/user-attachments/assets/d2d33ab5-2bc1-4caf-9c2f-f34cf7e72f6f)
+
+This does not look good once I open them in excel, 
+![image](https://github.com/user-attachments/assets/a916fa3a-6a87-4d50-91f6-84ab64fce2e3)
+
+But I found two ways to "solve" this issue, one is to open a blank file in excel and use data tab to import from csv and then choosing the generated csv files. The other one is using an extension inside vscode which can help visualizing csv files as ascii tables (I think this one is a good solution in the meantime). To do this I installed the extension and use the search bar on top of vscode, show and run commands option and then convert to table from csv... I think this works for both.
+![image](https://github.com/user-attachments/assets/5ced86aa-83c6-4f42-b091-522adcc4aa6f)
+
+I do not know yet how much of the horizontal or vertical analysis is involved in this outputs... it is also a question how is the cost of the opt route compared to the non-opt.
+---
+
+I have been reading the united airlines methodology and I'm preparing a small document in latex to summarize it, at first it does not seem to be that much different from the caguya research... pretty much the same idea with backtracking.
