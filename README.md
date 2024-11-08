@@ -337,4 +337,166 @@ The arc calculation part is made in a for loop that goes through each arc (again
 
 ![image](https://github.com/user-attachments/assets/fa499ca8-13ce-4ee6-b08d-1bb0f795f940)
 
-I profiled this function using time function... let's see how it goes.
+I profiled this function (`optim_altitude`using time function. And ran it for the three flights I had tested. Results were as follows,
+
+DAL1743 flight
+
+```python
+Connecting to the PostgreSQL database...
+from db_BADA_query.py -> aircraft_info_query
+waypoints_optim(row=
+ origin_airport                                         KATL
+destination_airport                                    KTYS
+arrival_time                                      Tue 15.06
+dept_time                                         Tue 14.32
+aircraft_type                                          B739
+flight_names                           DAL1743_20241022.csv
+identity_num                                        DAL1743
+route                          KATL.SMKEY2.BOBBD..KTYS/0030
+filed_altitude                                          NaN
+filed_airspeed_kts                                      445
+flight_ref                                        101536943
+head_time                                         14.533333
+flight_time                                        0.566667
+schedule_route_list             [KATL, SMKEY2, BOBBD, KTYS]
+schedule_route_time                                    0030
+ap_from                [-84.427864074707, 33.6366996765137]
+ap_from_alt                                          1026.0
+ap_to                  [-83.9940643310547, 35.811092376709]
+ap_to_alt                                             986.0
+Name: 0, dtype: object 
+ folderpath= c:\Users\Andres\OneDrive\Escritorio\flitex\Python_4DOptimization_Rewrite_JAN2021\shaify2\FDX\20241022 
+ aircraft= <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B6F2B46FB0> 
+ analysis_params= {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} 
+ target_flight_time 2039.999999999999 )
+Altitude not specified, set to: FL 450.0
+Getting optimized flight route.
+Running run_flight_path_optimization( 60 100 450.0 [-84.43, 33.64] [-83.99, 35.81] 1200 T+27 <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B6F2B46FB0> {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} KATL KTYS )
+Querying arcs for optimization.
+Connecting to the PostgreSQL database...
+from arc_query
+Calling get_arcs function with  33.54 , -84.53 , 35.910000000000004 , -83.89 , 1200 , 27 , 125
+output received and connection closed in the arc_query in 3.7907087802886963 seconds
+Arcs imported.
+Number of arcs: 128772.0
+Arc cost calculation took 4.806931018829346 seconds
+Running A* Flight Path Optimizer
+[ -84.4351 , 33.62923889 ], [ -84.01125556 , 35.79934722 ]
+GraphProblem( 230646 232781 )
+1591.4801408627789
+Connecting to the PostgreSQL database...
+A* algorithm runs in 0.7184333801269531 seconds
+Optimized route obtained.
+Carrying out time optimization.
+```
+
+FDX383 flight
+
+```python
+Connecting to the PostgreSQL database...
+from db_BADA_query.py -> aircraft_info_query
+waypoints_optim(row=
+ origin_airport                                             KMEM
+destination_airport                                        KORD
+arrival_time                                          Sat 21.40
+dept_time                                             Sat 20.18
+aircraft_type                                              B763
+flight_names                                FDX383_20240928.csv
+identity_num                                             FDX383
+route                   KMEM.JTEEE5.ODATE..FTZ.SHAIN2.KORD/0121
+filed_altitude                                              NaN
+filed_airspeed_kts                                          466
+flight_ref                                             99361631
+head_time                                                  20.3
+flight_time                                            1.366667
+schedule_route_list    [KMEM, JTEEE5, ODATE, FTZ, SHAIN2, KORD]
+schedule_route_time                                        0121
+ap_from                    [-89.976676940918, 35.0424118041992]
+ap_from_alt                                               341.0
+ap_to                     [-87.9081497192383, 41.9769401550293]
+ap_to_alt                                                 680.0
+Name: 0, dtype: object 
+ folderpath= c:\Users\Andres\OneDrive\Escritorio\flitex\Python_4DOptimization_Rewrite_JAN2021\shaify2\FDX\20240928 
+ aircraft= <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B69441FAF0> 
+ analysis_params= {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} 
+ target_flight_time 4920.000000000002 )
+Altitude not specified, set to: FL 450.0
+Getting optimized flight route.
+Running run_flight_path_optimization( 60 100 450.0 [-89.98, 35.04] [-87.91, 41.98] 1800 T+27 <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B69441FAF0> {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} KMEM KORD )
+Querying arcs for optimization.
+Connecting to the PostgreSQL database...
+from arc_query
+Calling get_arcs function with  34.94 , -90.08 , 42.08 , -87.81 , 1800 , 27 , 125
+output received and connection closed in the arc_query in 12.683862209320068 seconds
+Arcs imported.
+Number of arcs: 482218.0
+Arc cost calculation took 18.121946096420288 seconds
+Running A* Flight Path Optimizer
+[ -89.98733333 , 35.04447778 ], [ -87.90481944 , 41.98768889 ]
+GraphProblem( 232959 209202 )
+5637.253166566561
+Connecting to the PostgreSQL database...
+A* algorithm runs in 0.7193319797515869 seconds
+Optimized route obtained.
+Carrying out time optimization.
+```
+
+DAL960 flight
+
+```python
+from db_BADA_query.py -> aircraft_info_query
+waypoints_optim(row=
+ origin_airport                                                      KLAX
+destination_airport                                                 KJFK
+arrival_time                                                   Sun 09.46
+dept_time                                                      Sun 04.48
+aircraft_type                                                       B763
+flight_names                                         DAL960_20241020.csv
+identity_num                                                      DAL960
+route                  KLAX.OSHNN1.BEALE.J146.DVC..KD54W..KD57Y..KD60...
+filed_altitude                                                       NaN
+filed_airspeed_kts                                                   458
+flight_ref                                                     101339773
+head_time                                                            4.8
+flight_time                                                     4.966667
+schedule_route_list    [KLAX, OSHNN1, BEALE, J146, DVC, KD54W, KD57Y,...
+schedule_route_time                                                 0457
+ap_from                             [-118.408050537109, 33.942497253418]
+ap_from_alt                                                        128.0
+ap_to                               [-73.778694152832, 40.6399269104004]
+ap_to_alt                                                           13.0
+Name: 0, dtype: object 
+ folderpath= c:\Users\Andres\OneDrive\Escritorio\flitex\Python_4DOptimization_Rewrite_JAN2021\shaify2\FDX\20241020 
+ aircraft= <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B6831FC700> 
+ analysis_params= {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} 
+ target_flight_time 17880.000000000004 )
+Altitude not specified, set to: FL 450.0
+Getting optimized flight route.
+Running run_flight_path_optimization( 60 100 450.0 [-118.41, 33.94] [-73.78, 40.64] 0600 T+24 <B04_AC_Performance.Aircraft.Aircraft object at 0x000001B6831FC700> {'fuel_price': '0.57', 'operating_cost': '1.24142', 'time_window': '10000000'} KLAX KJFK )
+Querying arcs for optimization.
+Connecting to the PostgreSQL database...
+from arc_query
+Calling get_arcs function with  33.839999999999996 , -118.50999999999999 , 40.74 , -73.68 , 600 , 24 , 125
+output received and connection closed in the arc_query in 119.82924270629883 seconds
+Arcs imported.
+Number of arcs: 4394622.0
+Arc cost calculation took 170.3739893436432 seconds
+Running A* Flight Path Optimizer
+[ -118.40370278 , 33.94285 ], [ -73.77138889 , 40.63288889 ]
+GraphProblem( 186363 234354 )
+29244.82903819262
+Connecting to the PostgreSQL database...
+A* algorithm runs in 5.136764287948608 seconds
+Optimized route obtained.
+Carrying out time optimization.
+```
+
+
+|name|date|origin|destination|number_waypoints|number_arcs|arc_cost_time(seconds)|
+|---|---|---|---|---|---|---|
+|DAL1743|2024-10-22|KATL(Atlanta)|KTYS(Knoxville-Tennessee)|8|128772|4.8|
+|FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|17|482218|18.1|
+|DAL960|2024-10-20|KLAX(Los Angeles)|KJFK(NY)|44|4394622|170.4|
+
+
+
