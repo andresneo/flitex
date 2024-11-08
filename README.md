@@ -231,6 +231,110 @@ But I found two ways to "solve" this issue, one is to open a blank file in excel
 ![image](https://github.com/user-attachments/assets/5ced86aa-83c6-4f42-b091-522adcc4aa6f)
 
 I do not know yet how much of the horizontal or vertical analysis is involved in this outputs... it is also a question how is the cost of the opt route compared to the non-opt.
----
 
+---
 I have been reading the united airlines methodology and I'm preparing a small document in latex to summarize it, at first it does not seem to be that much different from the caguya research... pretty much the same idea with backtracking.
+
+## November 7
+Inside the notebook I'm trying to understand in more depth this function `get_waypoint_info`(which is the kernel of the optimization)
+![image](https://github.com/user-attachments/assets/99a50af4-e663-44f3-b135-c30c959c7cab)
+
+right now is using the `optim_altitude` which returns the `waypoints_optim` function 
+![image](https://github.com/user-attachments/assets/8deca2a5-67ab-4df1-a596-b1be568087f9)
+
+That function is located in `get_waypoint_info.py` script and among other things, does the following:
+
+- Get the coordinates of the departure and arrival airports
+- Sets the altitude to be used (if non given assumes 36000 ft)
+
+  ```python
+  if not np.isnan(row.filed_altitude):
+    alt=row.filed_altitude
+  else:
+    alt=360
+  ```
+- **Sets the angles used for arc purging ** *it says (This is deprecated)*
+  ```python
+  min_degree=60
+  max_degree=100
+  ```
+### Remarks until this point
+- The angle definition could be potentially a great point of improvement.
+- From what I understand (but I have to take a better look at this point) the altitude to be used is fixed here, and then the algorithm runs only horizontal optimization (which means a planar graph set at that fixed altitude). This could also be a good improvement point: If changing flight level is not allowed (as UAL said customer hate changes in altitude) then horizontal optimization could be run for several altitudes (i.e. if I have possible altitudes a,b,c then running horizontal optim for a, then for b and then for c and finally making a comparison could be interesting(?)). If changing flight level is allowed between waypoints then a different approach would be needed... In any case I don't fully understand how the calculation/optimization is possible not being live. What I mean by this is: they say they have the data for the wind along the path but that is made at time $t_0$ at that moment is possible that certain calculated path is the best, but this is only the case if that wind is fixed in time (and I don't think this is the case). How can one know if at some point the wind changed dramatically from what was expected beforehand and wind is against the path...
+
+### Heart of the optimizer
+`waypoints_optim` tries running the optimizer 
+
+```python
+# Run the optimizer
+print("Running run_flight_path_optimization(", min_degree,max_degree,alt,ap_from,ap_to,forecast,forecast_interval,aircraft,analysis_params,name_from,name_to, ")")
+node_names, node_lon, node_lat, number_of_arcs, node_ugrid, node_vgrid, node_temp = \
+run_flight_path_optimization(min_degree,max_degree,alt,ap_from,ap_to,forecast,forecast_interval,aircraft,analysis_params,name_from,name_to)`
+```
+so naturally we go to `run_flight_path_optimization` function, which is inside `horizontal_optim.py` script.
+
+What I first notice is that **`min_degree` and `max_degree` are parameters in the function not being used!**- What it does first is the following:
+
+```python
+# Set the bounds for the arc request, lon_from should be xmin, lon_to is xmax, lat_from is ymin, lat_to is ymax
+```
+it does so by adding/substracting some degrees to the actual origin/destination coordinates (to not be so on the edge)
+
+```python
+if ap_from[0] > ap_to[0]: # Longitude
+  lon_from_bound = ap_to[0]   - 0.1 # ap_from[0] + 0.1 
+  lon_to_bound   = ap_from[0] + 0.1 # ap_to[0]   - 0.1 
+else:
+  lon_from_bound = ap_from[0] - 0.1 
+  lon_to_bound   = ap_to[0]   + 0.1
+if ap_from[1] > ap_to[1]: # Latitude
+  lat_from_bound = ap_to[1]   - 0.1 # ap_from[1] + 0.1 
+  lat_to_bound   = ap_from[1] + 0.1 # ap_to[1]   - 0.1
+else:
+  lat_from_bound = ap_from[1] - 0.1
+  lat_to_bound   = ap_to[1]   + 0.1
+```
+All this makes me think that when they said (min_degree and max_degree deprecated) it probably means that some time ago they used to do a cone search but know using the postresql is not needed anymore (at least in the function those variables are not in use)
+
+Then the arcs are imported using the function `arc_query` inside `db_flightpath_query` script.
+![image](https://github.com/user-attachments/assets/40455ac6-793b-4348-a696-4fd284f80fc4)
+
+this function (as well as others inside is a postgreSQL function that can be found in Confluence
+> DAIR_AWS Server & PostgreSQL Arc Preparation (Used by Flight Path Optimizer) under "Define Function To Request Arcs"
+
+for now I won't go deeply into it, but one thing I got is that what they define as *bounding box* and the search area for arcs is a rectangle between origin and destination airports, this could be improved since probably this is a very big area.
+
+The arcs are imported (taking restrictions into consideration) and time is measured for this task.
+
+```python
+Querying arcs for optimization.
+Connecting to the PostgreSQL database...
+from arc_query
+Calling get_arcs function with  33.54 , -84.53 , 35.910000000000004 , -83.89 , 1200 , 27 , 125
+output received and connection closed in the arc_query in 3.5746734142303467 seconds
+Arcs imported.
+Number of arcs: 128772.0
+```
+
+After this, geometric distances from each node to destination airport are calculated (using the haversine formula)
+    # Add the nodes to the graph
+    G.add_node(node_list) # 85545 shows up in node_list and is added to G
+
+```python
+for node in node_list:
+  # Get the index of the node in the node_data array
+  idx = int(np.where(node_data[:,0] == node)[0])
+        
+  # Add the great circle distance to the heuristic
+  # The great circle distance (in m) is calculated using the Haversine formula
+  H[int(node)] = float(haversine(ap_to,[node_data[idx,2],node_data[idx,1]]))
+```
+
+Direction vectors and wind components are calculated over the arc (see pdf for more detail).
+
+The arc calculation part is made in a for loop that goes through each arc (again in the pdf there is more detail). 
+> As a note, inside this loop the code access the perfomance table inside the bada files (so I propose a fix using a **cast to float**
+
+![image](https://github.com/user-attachments/assets/fa499ca8-13ce-4ee6-b08d-1bb0f795f940)
+
+I profiled this function using time function... let's see how it goes.
