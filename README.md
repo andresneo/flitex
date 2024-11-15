@@ -498,5 +498,55 @@ Carrying out time optimization.
 |FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|17|482218|18.1|
 |DAL960|2024-10-20|KLAX(Los Angeles)|KJFK(NY)|44|4394622|170.4|
 
+## Update 
 
+Made a branch `andres_branch` in github to work through the code.
+
+### Detailed Function Summary
+
+1. **Function `get_waypoint_info`**
+   - This function processes each row of a flight data DataFrame, extracting waypoint information.
+   - Depending on the selected option (`norm`, `opt`, `optim`, `forward`), it decides whether to retrieve an unoptimized real route or an optimized one:
+     - **No Optimization (`norm`)**: Retrieves real waypoints without adjustment.
+     - **With Optimization (`opt` or `optim`)**: Calls `waypoints_optim` to calculate an optimized route for the target flight time.
+   - **Result**: Returns an updated DataFrame with waypoints and coordinates.
+
+2. **Function `waypoints_optim`**
+   - Takes a row of data and calculates an optimal altitude using `set_optim_alt` if `filed_altitude` is not specified.
+   - **Forecast Setup**:
+     - Rounds `head_time` to a multiple of 6 hours to create `forecast` (e.g., 1200 for 12:00).
+     - Calculates `forecast_interval`, indicating the duration for which this forecast is valid (in this case, it can only be `T+21`, `T+24`, or `T+27`, which may limit accuracy for long flights).
+   - Calls `run_flight_path_optimization` to obtain the optimized route using these parameters.
+
+3. **Function `run_flight_path_optimization`**
+   - Calculates the bounds of a rectangular region around the origin and destination points.
+   - Calls the SQL function `get_arcs` to obtain route segments (arcs) within these bounds, using `forecast`, `forecast_interval`, and `filed_alt`.
+   - Duplicates arcs to consider both directions of each segment, then calculates wind vectors, fuel and time costs, and other relevant data for the route.
+   - **A* Algorithm**: Applies the A* algorithm using the arcs and nodes created to find the minimum cost route in terms of fuel and time.
+   - Returns the names and coordinates of the nodes in the optimized route.
+
+4. **SQL Function `get_arcs`**
+   - This SQL function retrieves detailed information about route arcs within a specified region and altitude.
+   - Uses time (`f_time`) and interval (`f_interval`) to interpolate meteorological data such as temperature and wind components at relevant points of each arc.
+
+---
+
+### Key Explanations for the Meeting
+
+1. **Weather Forecast and Long Flights**
+   - The forecast (`forecast`) and interval (`forecast_interval`) are set in 6-hour increments. This means there are only three possible intervals (`T+21`, `T+24`, `T+27`), which may be insufficient for long flights.
+   - **Suggestion for Long Flights**: We could adjust to dynamically update the `forecast` and `forecast_interval` at regular intervals, aligning them with the total flight duration. This would ensure the route optimization better reflects changing wind and weather conditions over long distances.
+
+2. **Altitude Adjustment Based on Weight**
+   - The `waypoints_optim` function calculates an initial optimal altitude, but the current code does not dynamically adjust altitude as the aircraft weight decreases (due to fuel consumption).
+   - **Explanation to Bernard and Yuriy**: Implementing periodic checks to adjust altitude according to the reduction in aircraft weight could improve efficiency in terms of fuel consumption.
+
+3. **Identifying Anomalous Flights**
+   - Anomaly detection could be based on situations where the adjusted distance for flight speed is greater in the optimized route than in the non-optimized route, which should not occur under ideal conditions.
+   - Additionally, the fuel flow per second (available in BADA files) could be compared with the resulting flow in the optimized route to check for inconsistencies.
+
+---
+3. **Visuals**: If possible, include diagrams or flowcharts to visualize the optimization process and the impact of weather and altitude adjustments.
+
+Overall, the response is solid and should help you explain the system effectively during your meeting. Good luck! 😊🚀
 
