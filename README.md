@@ -512,41 +512,82 @@ Made a branch `andres_branch` in github to work through the code.
    - **Result**: Returns an updated DataFrame with waypoints and coordinates.
 
 2. **Function `waypoints_optim`**
-   - Takes a row of data and calculates an optimal altitude using `set_optim_alt` if `filed_altitude` is not specified.
+   - Takes a row of data and calculates an optimal altitude using `set_optim_alt` if `filed_altitude` is not specified (if optim_altitude option is chosen)
+
+   ```python
+     def set_optim_alt(aircraft,ap_from,ap_to):
+    # First, get the target optimum altitude
+    true_opt_alt = calc_true_opt_alt(aircraft)
+    
+    # Get the legal alts
+    legal_alts = calc_legal_alts(ap_from,ap_to)
+    
+    # Find the closest altitude
+    diff = np.abs(legal_alts-true_opt_alt)
+    idx_closest = diff.argmin()
+    best_legal_alt = legal_alts[idx_closest]
+
+    # Return the best legal altitude
+    return best_legal_alt
+   ```
+  and if  optim option was chosen:
+  ```python
+    # If a filed altitude was given then take that as the altitude
+    # Set the altitude to be used. If no altitude was given, assume 36000 ft
+    if not np.isnan(row.filed_altitude):
+        alt=row.filed_altitude
+    else:
+        alt=360
+  ```
+  
+
    - **Forecast Setup**:
      - Rounds `head_time` to a multiple of 6 hours to create `forecast` (e.g., 1200 for 12:00).
-     - Calculates `forecast_interval`, indicating the duration for which this forecast is valid (in this case, it can only be `T+21`, `T+24`, or `T+27`, which may limit accuracy for long flights).
+     - Calculates `forecast_interval`, indicating the duration for which this forecast is valid (in this case, it can only be `T+21`, `T+24`, or `T+27`) I tried this with different `head_time` and those three options were the only three cases.
+```python
+head_time = 9
+
+forecast_n=round(head_time/6)*6
+#to be precise the rounding is to the closest multiple of 6 and if its equidistant (lets say 9) then it goes to the closest up (lets say 12)
+
+# Converts to a 4 digit format, with the last two digits as 00, i.e. 1800
+forecast=(2-len(str(forecast_n)))*"0"+str(forecast_n)+'0'*2 #6 will become '0600', 12 becomes '1200', etc
+    
+# Ensure that 24-hour clock format is adhered to
+if forecast=="2400":
+    forecast="0000"
+            
+# Set the forecast interval for the weather
+forecast_interval = 'T+'+str(int(24+round((head_time-forecast_n)/3)*3))
+
+print("head time: ", head_time)
+print("rounded forecast: ", forecast_n)
+print("forecast with formated time: ", forecast)
+print("forecast interval: ", forecast_interval)
+```
+Output
+```cmd
+head time:  9
+rounded forecast:  12
+forecast with formated time:  1200
+forecast interval:  T+21
+
+
+** Process exited - Return Code: 0 **
+Press Enter to exit terminal
+```
+       
    - Calls `run_flight_path_optimization` to obtain the optimized route using these parameters.
 
-3. **Function `run_flight_path_optimization`**
+2. **Function `run_flight_path_optimization`**
    - Calculates the bounds of a rectangular region around the origin and destination points.
    - Calls the SQL function `get_arcs` to obtain route segments (arcs) within these bounds, using `forecast`, `forecast_interval`, and `filed_alt`.
    - Duplicates arcs to consider both directions of each segment, then calculates wind vectors, fuel and time costs, and other relevant data for the route.
    - **A* Algorithm**: Applies the A* algorithm using the arcs and nodes created to find the minimum cost route in terms of fuel and time.
    - Returns the names and coordinates of the nodes in the optimized route.
 
-4. **SQL Function `get_arcs`**
+3. **SQL Function `get_arcs`**
    - This SQL function retrieves detailed information about route arcs within a specified region and altitude.
    - Uses time (`f_time`) and interval (`f_interval`) to interpolate meteorological data such as temperature and wind components at relevant points of each arc.
 
----
-
-### Key Explanations for the Meeting
-
-1. **Weather Forecast and Long Flights**
-   - The forecast (`forecast`) and interval (`forecast_interval`) are set in 6-hour increments. This means there are only three possible intervals (`T+21`, `T+24`, `T+27`), which may be insufficient for long flights.
-   - **Suggestion for Long Flights**: We could adjust to dynamically update the `forecast` and `forecast_interval` at regular intervals, aligning them with the total flight duration. This would ensure the route optimization better reflects changing wind and weather conditions over long distances.
-
-2. **Altitude Adjustment Based on Weight**
-   - The `waypoints_optim` function calculates an initial optimal altitude, but the current code does not dynamically adjust altitude as the aircraft weight decreases (due to fuel consumption).
-   - **Explanation to Bernard and Yuriy**: Implementing periodic checks to adjust altitude according to the reduction in aircraft weight could improve efficiency in terms of fuel consumption.
-
-3. **Identifying Anomalous Flights**
-   - Anomaly detection could be based on situations where the adjusted distance for flight speed is greater in the optimized route than in the non-optimized route, which should not occur under ideal conditions.
-   - Additionally, the fuel flow per second (available in BADA files) could be compared with the resulting flow in the optimized route to check for inconsistencies.
-
----
-3. **Visuals**: If possible, include diagrams or flowcharts to visualize the optimization process and the impact of weather and altitude adjustments.
-
-Overall, the response is solid and should help you explain the system effectively during your meeting. Good luck! 😊🚀
 
