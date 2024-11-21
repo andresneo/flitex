@@ -36,6 +36,7 @@ $ exit
 ---
 
 A good advice is to delete env folder first! This is located in `C:/Users/Andres/flitex/Python_4DOptimization_Rewrite_JAN2021/env`
+> This env folder could actually be added to a .gitignore file! for future setups.
 
 Then run
 
