@@ -199,19 +199,7 @@ At first test `DAL701` didn't run, it truncated... In other run it did compile, 
 
 ![DAL701](https://github.com/user-attachments/assets/9e74a8ee-73c9-45a5-aced-7f8749991fdf)
 
-On PGAdmin, some useful commands Sid showed me and I have been using inside `ibmclouddb>schemas>public>tables>flightplan_info` to filter flights of interest:
-
-```SQL
-SELECT * FROM public.flightplan_info where aircraft_id = 'DAL701'
-ORDER BY source_timestamp DESC LIMIT 10
-
-SELECT aircraft_id, departure, arrival, etd ,legacy_format FROM public.flightplan_info where aircraft_id = 'DAL701'
-ORDER BY source_timestamp DESC LIMIT 10
-```
-the star means selecting everything, the aircraft_id can be found listing the first 100 rows and picking one of interest, althought the ones I've been using are ones that Sid already has recommended trying (FDX383, DAL701,..., see this notes for others)
-the second line means that we are ordering by the time in descending order and that we only want 10 rows.
-
----
+About how to use PGAdmin refer [here](./How_to_use_PGAdmin4.md)
 
 ### Gantt chart
 It took some time and is pending to upload but I made a great gantt chart to keep track of progress :)
