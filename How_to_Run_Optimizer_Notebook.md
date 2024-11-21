@@ -1,4 +1,4 @@
-# Updated How to Run Optimizer Notebook after machine change.
+# Updated How to Run Optimizer Notebook 
 
 
 
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 I had a lot of trouble in this step. The conclusion is:
 
-- Be sure to download python 3.10.2 version as this one seems to be the one compatible with every package used.
+- Be sure to download **python 3.10.2** version as this one seems to be the one compatible with every package used.
 - delete env folder (if it was not done in ) and RE-DO [Step 2](#Step-2-Activate-virtual-environment) again!
 
 # Step 3.5 
