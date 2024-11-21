@@ -590,4 +590,7 @@ Press Enter to exit terminal
    - This SQL function retrieves detailed information about route arcs within a specified region and altitude.
    - Uses time (`f_time`) and interval (`f_interval`) to interpolate meteorological data such as temperature and wind components at relevant points of each arc.
 
+---
+## Update November 20
+The setup in a new machine is difficult. I added a [How to Run](./How_to_Run_Optimizer_Notebook.md) in my repository to have this at hand when needed.
 
