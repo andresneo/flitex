@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/aea61488-f3c1-4a64-b37c-d973da67685c)# Simbrief Software
+# Simbrief Software
 
 I will use [SimBrief software](https://www.simbrief.com/home/) which is a web-based flight planning tool that generates flight plans and simulates routes.
 
