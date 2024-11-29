@@ -92,6 +92,24 @@ that one to the Flitex one. A quick summary:
 
 Here again the Flitex route seems to be better.
 
+About GRIB Files:
+
+I will take flight FDX 383 Memphis to Chicago to make some testing about the Grib Files taken.
+
+|name|date|origin|destination|
+|---|---|---|---|
+|FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|
+
+I have run this flight three times and got the following results (can be found in `C:\Users\Andres\flitex\Python_4DOptimization_Rewrite_JAN2021\notebooks\TestDL\Result_shaify\20240928\FDX383\optim_flight_summary.csv`)
+
+| length | route                                               | time    | total_cost | distance | mass_burned | Total_cost_kg | Total_cost_lb | takeoff_mass | landing_mass | cruise_ave_speed | cost_of_time | cost_of_fuel | real_path_wind_distance | cost_index_kg_min | cost_index_lbUSD_centsHr | origin | destination | number_of_arcs | grib_data_time             | carbon_output |
+| ------ | --------------------------------------------------- | ------- | ---------- | -------- | ----------- | ------------- | ------------- | ------------ | ------------ | ---------------- | ------------ | ------------ | ----------------------- | ----------------- | ------------------------ | ------ | ----------- | -------------- | -------------------------- | ------------- |
+| 6      | KMEM FEVES ZEVPO JOROB CORKI SUBUE JILLY GORLC KORD | 1.07339 | 8008.34    | 795858   | 5633.7708   | 5633.7708     | 12420.3238    | 100024.6698  | 94390.9000   | 438.169          | 4469.112     | 0.570        | 425.87                  | 784054.74         | 784054.74                | KMEM   | KORD        | 0              | 2024-11-08 08:03:38.772072 | 17802.716     |
+| 6      | KMEM FEVES ZEVPO JOROB CORKI SUBUE JILLY GORLC KORD | 1.04005 | 7202.36    | 795858   | 4481.1621   | 4481.1621     | 9879.2595     | 98871.2490   | 94390.9000   | 449.278          | 4469.112     | 0.570        | 424.04                  | 784054.74         | 784054.74                | KMEM   | KORD        | 0              | 2024-11-22 09:09:01.686902 | 14160.472     |
+|      6 | KMEM FEVES ZEVPO JOROB CORKI SUBUE JILLY GORLC KORD | 1.04005 |    7202.36 |   795858 |   4481.1621 |     4481.1621 |     9879.2595 |   98871.2490 |   94390.9000 |          449.278 |     4469.112 |        0.570 |                  424.04 |         784054.74 |                784054.74 | KMEM   | KORD        |              0 | 2024-11-29 09:53:40.124597 |     14160.472 |
+
+
+
 ## DAL960 KLAX(LA) -> KJFK(NY)
 ![image](https://github.com/user-attachments/assets/34a42bd4-c95f-42f6-bc7c-7042c72101c6)
 ![image](https://github.com/user-attachments/assets/1e59e3fd-aa8e-4105-8314-750e14bed408)
