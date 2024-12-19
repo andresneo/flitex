@@ -111,6 +111,13 @@ I have run this flight three times and got the following results (can be found i
 | 6      | KMEM FEVES ZEVPO JOROB CORKI SUBUE JILLY GORLC KORD | 1.04005 | 7202.36    | 795858   | 4481.1621   | 4481.1621     | 9879.2595     | 98871.2490   | 94390.9000   | 449.278          | 4469.112     | 0.570        | 424.04                  | 784054.74         | 784054.74                | KMEM   | KORD        | 0              | 2024-12-05 21:47:14.450129 | 14160.472     |
 
 
+## DAL3049 KATL(Atlanta)|KTYS(Knoxville-Tennessee)
+| length | route                 | time    | total_cost | distance | mass_burned | Total_cost_kg | Total_cost_lb | takeoff_mass | landing_mass | cruise_ave_speed | cost_of_time | cost_of_fuel | real_path_wind_distance | cost_index_kg_min | cost_index_lbUSD_centsHr | origin | destination | number_of_arcs | grib_data_time             | carbon_output |
+| ------ | --------------------- | ------- | ---------- | -------- | ----------- | ------------- | ------------- | ------------ | ------------ | ---------------- | ------------ | ------------ | ----------------------- | ----------------- | ------------------------ | ------ | ----------- | -------------- | -------------------------- | ------------- |
+| 4      | KATL IPECA HINDE KTYS | 0.54486 | 2987.34    | 252151   | 968.9504    | 968.9504      | 2136.1675     | 32858.6552   | 31890.0000   | 319.731          | 4469.112     | 0.570        | 134.05                  | 784054.74         | 784054.74                | KATL   | KTYS        | 0              | 2024-12-19 21:18:59.792271 | 3061.883      |
+
+
+
 ## DAL960 KLAX(LA) -> KJFK(NY)
 ![image](https://github.com/user-attachments/assets/34a42bd4-c95f-42f6-bc7c-7042c72101c6)
 ![image](https://github.com/user-attachments/assets/1e59e3fd-aa8e-4105-8314-750e14bed408)
