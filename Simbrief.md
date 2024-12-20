@@ -98,7 +98,7 @@ I will take flight FDX 383 Memphis to Chicago to make some testing about the Gri
 
 |name|date|origin|destination|
 |---|---|---|---|
-|FDX383|2024-09-28|KMEM(Memphis)|KORD(Chicago)|
+|FDX383|2024-09-28 (20.18 - 21.40)|KMEM(Memphis)|KORD(Chicago)|
 
 I have run this flight three times and got the following results (can be found in `C:\Users\Andres\flitex\Python_4DOptimization_Rewrite_JAN2021\notebooks\TestDL\Result_shaify\20240928\FDX383\optim_flight_summary.csv`)
 
@@ -112,10 +112,22 @@ I have run this flight three times and got the following results (can be found i
 
 
 ## DAL3049 KATL(Atlanta)|KTYS(Knoxville-Tennessee)
+
+|name|date|origin|destination|
+|---|---|---|---|
+|dal3049|2024-12-19 (22.11 - 22.41)|KATL(Atlanta)|KTYS(Knoxville)|
+
+![Atlanta2Knoxville](https://github.com/user-attachments/assets/378e168a-375f-4a96-8977-666bb3e4ca11)
+
+First run 2:18 pm (MST) -> 9:18 pm (UTC)
+Second run 9:00 pm (MST) -> 4:00 am (UTC)
+Third run 11:27 pm (MST) -> 6:27 am (UTC)
+
 | length | route                 | time    | total_cost | distance | mass_burned | Total_cost_kg | Total_cost_lb | takeoff_mass | landing_mass | cruise_ave_speed | cost_of_time | cost_of_fuel | real_path_wind_distance | cost_index_kg_min | cost_index_lbUSD_centsHr | origin | destination | number_of_arcs | grib_data_time             | carbon_output |
 | ------ | --------------------- | ------- | ---------- | -------- | ----------- | ------------- | ------------- | ------------ | ------------ | ---------------- | ------------ | ------------ | ----------------------- | ----------------- | ------------------------ | ------ | ----------- | -------------- | -------------------------- | ------------- |
-| 4      | KATL IPECA HINDE KTYS | 0.54486 | 2987.34    | 252151   | 968.9504    | 968.9504      | 2136.1675     | 32858.6552   | 31890.0000   | 319.731          | 4469.112     | 0.570        | 134.05                  | 784054.74         | 784054.74                | KATL   | KTYS        | 0              | 2024-12-19 21:18:59.792271 | 3061.883      |
-
+|      4 | KATL IPECA HINDE KTYS | 0.54486 |    2987.34 |   252151 |    968.9504 |      968.9504 |     2136.1675 |   32858.6552 |   31890.0000 |          319.731 |     4469.112 |        0.570 |                  134.05 |         784054.74 |                784054.74 | KATL   | KTYS        |              0 | 2024-12-19 21:18:59.792271 |      3061.883 |
+|      4 | KATL IPECA HINDE KTYS | 0.54486 |    2987.34 |   252151 |    968.9504 |      968.9504 |     2136.1675 |   32858.6552 |   31890.0000 |          319.731 |     4469.112 |        0.570 |                  134.05 |         784054.74 |                784054.74 | KATL   | KTYS        |              0 | 2024-12-20 04:00:24.286897 |      3061.883 |
+| 4      | KATL IPECA HINDE KTYS | 0.54486 | 2987.34    | 252151   | 968.9504    | 968.9504      | 2136.1675     | 32858.6552   | 31890.0000   | 319.731          | 4469.112     | 0.570        | 134.05                  | 784054.74         | 784054.74                | KATL   | KTYS        | 0              | 2024-12-20 06:27:41.919587 | 3061.883      |
 
 
 ## DAL960 KLAX(LA) -> KJFK(NY)
